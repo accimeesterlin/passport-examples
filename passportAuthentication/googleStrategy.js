@@ -20,7 +20,9 @@ const GoogleStrategy = new Strategy({
                 googleId: profile.id,
                 email: (profile.emails && profile.emails) ? profile.emails[0].value : null,
                 username: profile.displayName.toLowerCase().replace(/ /g, ''),
-                profileImage: (profile.photos.length > 0) ? profile.photos[0].value : null
+                profileImage: (profile.photos.length > 0) ? profile.photos[0].value : null,
+                accessToken,
+                refreshToken
             };
 
             // Create a new User
