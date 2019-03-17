@@ -40,14 +40,6 @@ router.get('/profile', checkAuthentication, function (req, res) {
 });
 
 // Public Routes
-router.get('/login', function (req, res) {
-    res.render('login', { title: 'Login - Page', javascript_file: 'login' })
-});
-
-router.get('/signup', function (req, res) {
-    res.render('signup', { title: 'Signup - Page', javascript_file: 'signup' })
-});
-
 router.get('/notauthorized', function (req, res) {
     res.render('notauthorized', { title: 'Not Authorized - Pagw' })
 });

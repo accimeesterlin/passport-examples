@@ -16,13 +16,10 @@ passport.deserializeUser(function(id, done) {
 });
 
 // Import all our strategies
-const loginStrategy = require('./loginStrategy');
-const signupStrategy = require('./signupStragegy');
+const googleStrategy = require('./googleStrategy');
 
 
 // Configure our strategies
-passport.use('local-signup', signupStrategy);
-passport.use('local-signin', loginStrategy);
-
+passport.use('google', googleStrategy);
 
 module.exports = passport;
