@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Sign up - Authentication</title>
+</head>
+
+<body>
+    <div class="container-signup">
+        <form action="/signup" method="POST">
+            <div>
+                <label>Username:</label>
+                <input type="text" name="username" /><br />
+            </div>
+
+            <div>
+                <label>Email:</label>
+                <input type="text" name="email" />
+            </div>
+
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password" />
+            </div>
+
+            <div>
+                <label>Position:</label>
+                <input type="text" name="position" />
+            </div>
+
+            <div>
+                <input type="submit" value="Submit" />
+            </div>
+        </form>
+        <a href="/login">Already have an account? please login</a>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+        $('form').on('submit', (event) => {
+            event.preventDefault();
+            const username = $('input[name="username"]').val().trim();
+            const password = $('input[name="password"]').val().trim();
+            const position = $('input[name="position"]').val().trim();
+            const email = $('input[name="email"]').val().trim();
+
+            $.ajax({
+                    url: '/signup',
+                    method: 'POST',
+                    data: {
+                        username,
+                        password,
+                        position,
+                        email
+                    }
+                })
+                .then((data) => {
+                    window.location.href = '/profile';
+                })
+                .catch((error) => {
+                    window.location.href = '/signup';
+                });
+        })
+    </script>
+
+</body>
+
+</html>

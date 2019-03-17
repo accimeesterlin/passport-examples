@@ -1,0 +1,55 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container,
+.container-login,
+.container-signup,
+.container-profile,
+.container-not-authorized {
+    margin: 100px auto 100px auto;;
+    width: 300px;
+}
+
+
+/* Home Page */
+.container {
+    width: 400px;
+    padding-top: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.container a {
+    margin-top: 10px;
+}
+
+
+.container-login form div,
+.container-signup form div {
+    margin-bottom: 10px;
+}
+
+
+.container-signup form div {
+    margin-top: 10px;
+}
+
+
+.container-profile img {
+    width: 200px;
+}
+
+
+/* Not Authorized Page */
+.container-not-authorized {
+    width: 100%;
+    text-align: center;
+}
+.container-not-authorized h1 {
+    margin-bottom: 20px;
+}

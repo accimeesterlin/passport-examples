@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Profile - User</title>
+</head>
+
+<body>
+    <a href="/logout">Logout</a>
+    <div class="container-profile">
+        <p id="username"></p>
+
+        <img id="profileImage" src="#default_image" alt="Default Image for now" />
+
+        <p id="name"></p>
+        <p id="email"></p>
+    </div>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+    $.ajax({
+            url: '/user',
+            method: 'GET'
+        })
+        .then(function (user) {
+            console.log('User: ', user);
+            $('#username').html(`Username: ${user.username}`);
+            $('#email').html(`Email: ${user.email}`);
+            $('#location').html(user.location);
+            $('#profileImage').attr('src', user.profileImage ? user.profileImage :
+                'https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png');
+        })
+        .catch(function () {
+
+        });
+</script>
+
+</html>

@@ -1,43 +1,48 @@
-module.exports = (app, passport) => {
-    app.get('/', function (req, res) {
-        res.render('home');
-    });
+const passport = require('../passportAuthentication');
+const express = require('express');
+const router = express.Router();
 
-    app.post('/signup', function(req, res) {
-        passport.authenticate('local-signup', function(err, user, info) {
-            if (err || !user) {
-                return res.redirect('/signup');
-            }
-            return res.redirect(`/profile?email=${user.email}&id=${user.id}`);
-        })(req, res);
-    });
+router.get('/logout', function (req, res) {
+    req.logout();
+    req.session = null;
+    res.redirect('/');
+});
 
-    app.post('/login', function(req, res) {
-        passport.authenticate('local-signin', function(err, user, info) {
-            if (err || !user) {
-                return res.redirect('/login');
-            }
-            req.user = user;
-            return res.redirect(`/profile?email=${user.email}&id=${user.id}`);
-        })(req, res)
-    });
+const sendResponse = function (error, user, info) {
+    const req = this.req;
+    const res = this.res;
 
-    app.get('/login', function (req, res) {
-        res.render('login');
-    });
+    if (error) {
+        const statusCode = error.statusCode || 500;
+        return res.status(statusCode).json(error)
+    }
+    req.login(user, (error) => {
+        if (error) {
+            const statusCode = error.statusCode || 500;
+            return res.status(statusCode).json(error)
+        }
 
-    app.get('/signup', function (req, res) {
-        res.render('signup');
-    });
-
-
-    app.get('/profile', function (req, res) {
-        const { email, id } = req.query;
-        res.render('profile', {
-            user: {
-                email,
-                id
-            }
+        return res.json({
+            message: 'Successfully processed authentication',
+            statusCode: 200
         });
-    });
+    })
 }
+
+router.post('/signup', (req, res, next) => {
+    const authenticate = passport.authenticate('local-signup', sendResponse.bind({
+        req,
+        res
+    }));
+    authenticate(req, res, next);
+});
+
+router.post('/login', (req, res, next) => {
+    const authenticate = passport.authenticate('local-signin', sendResponse.bind({
+        req,
+        res
+    }));
+    authenticate(req, res, next);
+});
+
+module.exports = router;
