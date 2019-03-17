@@ -1,0 +1,16 @@
+<a href="/logout">Logout</a>
+<div class="container-profile">
+    <p id="username">Username: {{username}}</p>
+
+   {{#if profileImage}}
+        <img id="profileImage" src="{{profileImage}}" alt="Default Image for now" />
+   {{/if}}
+
+   {{#unless profileImage}}
+        <img id="profileImage" src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" alt="Default Image for now" />
+
+   {{/unless}}
+
+    <p id="name">{{name}}</p>
+    <p id="email">{{email}}</p>
+</div>

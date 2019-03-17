@@ -1,4 +1,4 @@
-const path = require('path');
+const connection = require('../connection');
 const express = require('express');
 const router = express.Router();
 
@@ -20,24 +20,36 @@ function checkAuthentication(req, res, next) {
 
 // Secure Routes
 router.get('/', checkAuthentication, function (req, res) {
-    res.sendFile(path.join(__dirname, '/../views', 'home.html'));
+    res.render('home', { title: 'Home - Page' })
 });
 
 router.get('/profile', checkAuthentication, function (req, res) {
-    res.sendFile(path.join(__dirname, '/../views', 'profile.html'));
+    connection.query('SELECT * FROM User WHERE id = ?', [req.user.id], (error, data) => {
+        if (error) {
+            return res.status(500).json({
+                message: 'Internal Error',
+                statusCode: 500
+            });
+        }
+
+        const user = data[0];
+        delete user.password;
+        res.render('profile', { title: 'Profile - Page', ...user });
+    });
+    
 });
 
 // Public Routes
 router.get('/login', function (req, res) {
-    res.sendFile(path.join(__dirname, '/../views', 'login.html'));
+    res.render('login', { title: 'Login - Page', javascript_file: 'login' })
 });
 
 router.get('/signup', function (req, res) {
-    res.sendFile(path.join(__dirname, '/../views', 'signup.html'));
+    res.render('signup', { title: 'Signup - Page', javascript_file: 'signup' })
 });
 
 router.get('/notauthorized', function (req, res) {
-    res.sendFile(path.join(__dirname, '/../views', 'notauthorized.html'));
+    res.render('notauthorized', { title: 'Not Authorized - Pagw' })
 });
 
 

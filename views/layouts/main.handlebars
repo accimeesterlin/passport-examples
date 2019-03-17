@@ -1,21 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/css/style.css">
-    <title>Home - Beer Buddy</title>
+    <title>{{ title }}</title>
 </head>
-
 <body>
-    <div class="container">
-        <h1>Welcome to my Appp</h1>
-        <a href="/login">Login Page</a>
-        <a href="/signup">Signup Page</a>
-    </div>
+    {{{body}}}
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    {{#if javascript_file}} <script src="/js/{{javascript_file}}.js"></script>  {{/if}}
 </body>
-
 </html>
