@@ -1,15 +1,15 @@
-const Strategy = require('passport-twitter').Strategy;
-const db = require('../db');
+const Strategy = require('passport-github').Strategy;
+const User = require('../models/user');
 
-const twitterStrategy = new Strategy({
-        consumerKey: process.env.TWITTER_CONSUMER_KEY,
-        consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-        callbackURL: "http://localhost:8080/auth/twitter/callback"
+const githubStrategy = new Strategy({
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: "http://localhost:8080/auth/github/callback"
     },
     function (token, tokenSecret, profile, cb) {
-        db.user.findOne({
+        User.findOne({
             profileId: profile.id
-        }, (err, user) => {
+        }).lean().exec((err, user) => {
             if (err) {
                 return cb(err, null);
             }
@@ -17,25 +17,25 @@ const twitterStrategy = new Strategy({
                 return cb(null, user);
             }
 
-            let newUser = {
+            let newUser = new User({
                 profileId: profile.id,
                 email: profile.emails && profile.emails.length > 0 ? profile.emails[0].value : null,
                 username: profile.username,
                 profileImage: (profile.photos.length > 0) ? profile.photos[0].value : null,
                 accessToken: token,
                 refreshToken: tokenSecret,
-                provider: profile.provider || 'twitter'
-            };
+                provider: profile.provider || 'gitub'
+            });
 
-            db.user.insert(newUser, (error, inserted) => {
+            newUser.save((error, inserted) => {
                 if (error) {
-                    return db(error, null);
+                    return cb(error, null);
                 }
 
                 return cb(null, inserted);
-            })
+            });
         });
     }
 )
 
-module.exports = twitterStrategy;
+module.exports = githubStrategy;

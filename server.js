@@ -2,13 +2,17 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 var exphbs  = require('express-handlebars');
+const mongoose = require('mongoose');
+const log = console.log;
 const PORT = process.env.PORT || 8080;
 const passport = require('./passportAuthentication');
 const authenticationRoute = require('./routes/authentication');
 const apiRoutes = require('./routes/apiRoutes');
 const htmlRoutes = require('./routes/htmlRoutes');
 const cookieSession = require('cookie-session');
-const log = console.log;
+
+
+mongoose.connect('mongodb://localhost/store');
 
 app.use(express.static('public'));
 

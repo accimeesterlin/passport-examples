@@ -1,7 +1,6 @@
-const db = require('../db');
 const express = require('express');
-const mongojs = require('mongojs');
 const router = express.Router();
+const User = require('../models/user');
 
 function checkAuthentication(req, res, next) {
     const isAuthenticate = req.isAuthenticated();
@@ -25,7 +24,7 @@ router.get('/', checkAuthentication, function (req, res) {
 });
 
 router.get('/profile', checkAuthentication, function (req, res) {
-    db.user.findOne({ _id: req.user._id }, (error, user) => {
+    User.findOne({ _id: req.user._id }).lean().exec((error, user) => {
         if (error) {
             return res.status(500).json({
                 message: 'Internal Error',
