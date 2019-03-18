@@ -14,10 +14,10 @@ passport.deserializeUser(function(id, done) {
 });
 
 // Import all our strategies
-const googleStrategy = require('./googleStrategy');
+const twitterStrategy = require('./twitterStrategy');
 
 
 // Configure our strategies
-passport.use('google', googleStrategy);
+passport.use('twitter', twitterStrategy);
 
 module.exports = passport;

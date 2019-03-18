@@ -18,7 +18,7 @@
     "mongoose": "^5.4.19",
     "mysql": "^2.16.0",
     "passport": "^0.4.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-twitter": "^1.0.4"
   },
   "devDependencies": {
     "eslint": "^5.15.1",

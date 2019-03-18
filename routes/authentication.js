@@ -8,12 +8,10 @@ router.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
-router.get('/auth/google', passport.authenticate('google', {
-    scope: [ 'profile' ]
-}));
+router.get('/auth/twitter', passport.authenticate('twitter'));
 
-router.get('/auth/google/callback', (req, res, next) => {
-    passport.authenticate('google', (error, user, info) => {
+router.get('/auth/twitter/callback', (req, res, next) => {
+    passport.authenticate('twitter', (error, user, info) => {
         if (error) {
             const statusCode = error.statusCode || 500;
             return res.status(statusCode).json(error)
@@ -23,7 +21,7 @@ router.get('/auth/google/callback', (req, res, next) => {
                 const statusCode = error.statusCode || 500;
                 return res.status(statusCode).json(error)
             }
-    
+
             return res.redirect('/profile')
         })
     })(req, res, next);
