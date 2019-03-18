@@ -18,7 +18,7 @@
     "mongojs": "^2.6.0",
     "mysql": "^2.16.0",
     "passport": "^0.4.0",
-    "passport-github": "^1.1.0"
+    "passport-google-oauth20": "^2.0.0"
   },
   "devDependencies": {
     "eslint": "^5.15.1",

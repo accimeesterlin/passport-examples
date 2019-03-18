@@ -1,8 +1,8 @@
 
 
-# Basic Passport Authentication without Express Session
+# Basic Passport Authentication - Cookie Session
 
-Simple Passportjs Authentication with Github Strategy without Express Session
+Simple Passportjs Authentication with Google Strategy without Express Session
 
 
-[Github Developer - Apps ](https://github.com/settings/developers)
+[Google Developer - Apps ](https://console.developers.google.com)
