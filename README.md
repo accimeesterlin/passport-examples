@@ -2,7 +2,7 @@
 
 # Basic Passport Authentication - Cookie Session
 
-Simple Passportjs Authentication with Twitter Strategy without Express Session
+Simple Passportjs Authentication with Github Strategy without Express Session
 
 
-[Twitter Developer - Apps ](https://developer.twitter.com/en/apps)
+[Github Developer - Apps ](https://github.com/settings/applications)
