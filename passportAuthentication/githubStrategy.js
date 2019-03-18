@@ -1,10 +1,10 @@
-const Strategy = require('passport-twitter').Strategy;
+const Strategy = require('passport-github').Strategy;
 const connection = require('../connection');
 
-const twitterStrategy = new Strategy({
-        consumerKey: process.env.TWITTER_CONSUMER_KEY,
-        consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-        callbackURL: "http://localhost:8080/auth/twitter/callback"
+const githubStrategy = new Strategy({
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: "http://localhost:8080/auth/github/callback"
     },
     function (token, tokenSecret, profile, cb) {
         connection.query('SELECT * FROM User WHERE profileId = ?', [profile.id], function (err, users) {
@@ -23,7 +23,7 @@ const twitterStrategy = new Strategy({
                 profileImage: (profile.photos.length > 0) ? profile.photos[0].value : null,
                 accessToken: token,
                 refreshToken: tokenSecret,
-                provider: profile.provider || 'twitter'
+                provider: profile.provider || 'github'
             };
 
             // Create a new User
@@ -41,4 +41,4 @@ const twitterStrategy = new Strategy({
     }
 )
 
-module.exports = twitterStrategy;
+module.exports = githubStrategy;

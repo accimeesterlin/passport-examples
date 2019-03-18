@@ -8,10 +8,10 @@ router.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
-router.get('/auth/twitter', passport.authenticate('twitter'));
+router.get('/auth/github', passport.authenticate('github'));
 
-router.get('/auth/twitter/callback', (req, res, next) => {
-    passport.authenticate('twitter', (error, user, info) => {
+router.get('/auth/github/callback', (req, res, next) => {
+    passport.authenticate('github', (error, user, info) => {
         if (error) {
             const statusCode = error.statusCode || 500;
             return res.status(statusCode).json(error)

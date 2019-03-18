@@ -16,10 +16,10 @@ passport.deserializeUser(function(id, done) {
 });
 
 // Import all our strategies
-const twitterStrategy = require('./twitterStrategy');
+const githubStrategy = require('./githubStrategy');
 
 
 // Configure our strategies
-passport.use('twitter', twitterStrategy);
+passport.use('github', githubStrategy);
 
 module.exports = passport;
