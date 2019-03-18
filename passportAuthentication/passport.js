@@ -20,10 +20,10 @@ passport.deserializeUser(function(id, done) {
 });
 
 // Import all our strategies
-const githubStrategy = require('./githubStrategy');
+const googleStrategy = require('./googleStrategy');
 
 
 // Configure our strategies
-passport.use('github', githubStrategy);
+passport.use('google', googleStrategy);
 
 module.exports = passport;

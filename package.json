@@ -17,7 +17,7 @@
     "express-handlebars": "^3.0.2",
     "mysql2": "^1.6.5",
     "passport": "^0.4.0",
-    "passport-github": "^1.1.0",
+    "passport-google-oauth20": "^2.0.0",
     "sequelize": "^5.1.0"
   },
   "devDependencies": {
