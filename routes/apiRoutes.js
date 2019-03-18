@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const db = require('../models');
 const express = require('express');
 const router = express.Router();
 
@@ -15,17 +15,21 @@ function checkAuthentication(req, res, next) {
 }
 
 router.get('/user', checkAuthentication, (req, res) => {
-    User.findOne({ id: req.user.id }, (error, data) => {
-        if (error) {
-            return res.status(500).json({
-                message: 'Internal Error',
-                statusCode: 500
-            });
-        }
-
-        const user = data[0];
+    db.User.findOne({
+        where: {
+            id: req.user.id
+        },
+        raw: true
+    })
+    .then((user) => {
         delete user.password;
         return res.status(200).json(user);
+    })
+    .catch((error) => {
+        return res.status(500).json({
+            message: 'Internal Error',
+            statusCode: 500
+        });
     });
 });
 

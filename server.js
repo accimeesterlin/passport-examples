@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 var exphbs  = require('express-handlebars');
-const mongoose = require('mongoose');
+const db = require('./models');
 const log = console.log;
 const PORT = process.env.PORT || 8080;
 const passport = require('./passportAuthentication');
@@ -11,8 +11,6 @@ const apiRoutes = require('./routes/apiRoutes');
 const htmlRoutes = require('./routes/htmlRoutes');
 const cookieSession = require('cookie-session');
 
-
-mongoose.connect('mongodb://localhost/store');
 
 app.use(express.static('public'));
 
@@ -35,4 +33,10 @@ app.use('/', authenticationRoute);
 app.use('/', apiRoutes);
 app.use('/', htmlRoutes);
 
-app.listen(PORT, () => log('Server is starting ', PORT));
+
+db.sequelize.sync({  })
+    .then(() => {
+        log('Sequelize is starting');
+        app.listen(PORT, () => log('Server is starting ', PORT));
+    })
+    .catch((error) => log('Sequelize error connecting ', error))

@@ -1,16 +1,22 @@
 const passport = require('passport');
-const User = require('../models/user');
+const db = require('../models');
 passport.serializeUser(function(user, done) {
-    done(null, user._id);
+    done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-    User.findOne({ _id: id }).lean().exec((error, user) => {
-        if (error) {
-            return done(err, null);
-        }
-        return done(null, user);
-    });
+    db.User.findOne({
+        where: {
+            id
+        },
+        raw: true
+    })
+    .then((user) => {
+        done(null, user)
+    })
+    .catch((error) => {
+        done(error, null)
+    })
 });
 
 // Import all our strategies

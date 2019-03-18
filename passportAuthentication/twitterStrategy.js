@@ -1,5 +1,5 @@
 const Strategy = require('passport-twitter').Strategy;
-const User = require('../models/user');
+const db = require('../models');
 
 const twitterStrategy = new Strategy({
         consumerKey: process.env.TWITTER_CONSUMER_KEY,
@@ -7,17 +7,19 @@ const twitterStrategy = new Strategy({
         callbackURL: "http://localhost:8080/auth/twitter/callback"
     },
     function (token, tokenSecret, profile, cb) {
-        User.findOne({
-            profileId: profile.id
-        }).lean().exec((err, user) => {
-            if (err) {
-                return cb(err, null);
-            }
+        db.User.findOne({
+            where: {
+                profileId: profile.id,
+            },
+            raw: true
+        })
+        .then((user) => {
+
             if (user) {
                 return cb(null, user);
             }
 
-            let newUser = new User({
+            let newUser = {
                 profileId: profile.id,
                 email: profile.emails && profile.emails.length > 0 ? profile.emails[0].value : null,
                 username: profile.username,
@@ -25,16 +27,18 @@ const twitterStrategy = new Strategy({
                 accessToken: token,
                 refreshToken: tokenSecret,
                 provider: profile.provider || 'twitter'
-            });
+            };
 
-            newUser.save((error, inserted) => {
-                if (error) {
-                    return cb(error, null);
-                }
-
-                return cb(null, inserted);
-            });
-        });
+            db.User.create(newUser)
+                .then((user) => {
+                    newUser.id = user.id;
+                    cb(null, newUser)
+                })
+                .catch((error) => {
+                    cb(error, null)
+                })
+        })
+        .catch((error) => cb(err, null));
     }
 )
 
