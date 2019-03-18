@@ -1,16 +1,16 @@
 const passport = require('passport');
-const connection = require('../connection');
+const mongojs = require('mongojs');
+const db = require('../db');
 
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
-    connection.query('SELECT * FROM User WHERE id = ?', [id], (err, users) => {
-        if (err) {
+    db.user.findOne({ _id: mongojs.ObjectID(id) }, (error, user) => {
+        if (error) {
             return done(err, null);
         }
-        const user = users[0];
         return done(null, user);
     });
 });

@@ -1,5 +1,5 @@
 const Strategy = require('passport-github').Strategy;
-const connection = require('../connection');
+const db = require('../db');
 
 const githubStrategy = new Strategy({
         clientID: process.env.GITHUB_CLIENT_ID,
@@ -7,11 +7,10 @@ const githubStrategy = new Strategy({
         callbackURL: "http://localhost:8080/auth/github/callback"
     },
     function (token, tokenSecret, profile, cb) {
-        connection.query('SELECT * FROM User WHERE profileId = ?', [profile.id], function (err, users) {
+        db.user.findOne({ profileId: profile.id }, (err, user) => {
             if (err) {
                 return cb(err, null);
             }
-            const user = users[0];
             if (user) {
                 return cb(null, user);
             }
@@ -26,17 +25,13 @@ const githubStrategy = new Strategy({
                 provider: profile.provider || 'github'
             };
 
-            // Create a new User
-            connection.query('INSERT INTO User SET ?', newUser, (err, data) => {
-                if (err) {
-                    return cb(null, false, {
-                        message: 'Internal Server error'
-                    })
+            db.user.insert(newUser, (error, result) => {
+                if (error) {
+                    return db(error, null);
                 }
-                newUser.id = data.insertId;
-                return cb(null, newUser);
-            });
 
+                return cb(null, result);
+            })
         });
     }
 )

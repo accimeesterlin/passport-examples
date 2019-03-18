@@ -1,5 +1,6 @@
-const connection = require('../connection');
+const db = require('../db');
 const express = require('express');
+const mongojs = require('mongojs');
 const router = express.Router();
 
 function checkAuthentication(req, res, next) {
@@ -24,7 +25,7 @@ router.get('/', checkAuthentication, function (req, res) {
 });
 
 router.get('/profile', checkAuthentication, function (req, res) {
-    connection.query('SELECT * FROM User WHERE id = ?', [req.user.id], (error, data) => {
+    db.user.findOne({ _id: req.user._id }, (error, user) => {
         if (error) {
             return res.status(500).json({
                 message: 'Internal Error',
@@ -32,10 +33,9 @@ router.get('/profile', checkAuthentication, function (req, res) {
             });
         }
 
-        const user = data[0];
         delete user.password;
         res.render('profile', { title: 'Profile - Page', ...user });
-    });
+    })
     
 });
 

@@ -1,4 +1,4 @@
-const connection = require('../connection');
+const db = require('../db');
 const express = require('express');
 const router = express.Router();
 
@@ -15,7 +15,7 @@ function checkAuthentication(req, res, next) {
 }
 
 router.get('/user', checkAuthentication, (req, res) => {
-    connection.query('SELECT * FROM User WHERE id = ?', [req.user.id], (error, data) => {
+    db.user.findOne({ id: req.user.id }, (error, data) => {
         if (error) {
             return res.status(500).json({
                 message: 'Internal Error',
