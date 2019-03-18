@@ -8,10 +8,12 @@ router.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
-router.get('/auth/github', passport.authenticate('github'));
+router.get('/auth/google', passport.authenticate('google', {
+    scope: [ 'profile' ]
+}));
 
-router.get('/auth/github/callback', (req, res, next) => {
-    passport.authenticate('github', (error, user, info) => {
+router.get('/auth/google/callback', (req, res, next) => {
+    passport.authenticate('google', (error, user, info) => {
         if (error) {
             const statusCode = error.statusCode || 500;
             return res.status(statusCode).json(error)
@@ -21,7 +23,7 @@ router.get('/auth/github/callback', (req, res, next) => {
                 const statusCode = error.statusCode || 500;
                 return res.status(statusCode).json(error)
             }
-
+    
             return res.redirect('/profile')
         })
     })(req, res, next);
